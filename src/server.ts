@@ -139,14 +139,14 @@ app.get("/matriculas/all", async (req, res) => {
   try {
     const visualizar = await prisma.matricula.findMany({
       include: {
-        discente: true
-      }
-    })
+        Discente: true,
+      },
+    });
     res.json(visualizar);
   } catch (error) {
-    res.send(error).status(500)
+    res.send(error).status(500);
   }
-})
+});
 
 app.get("/pesquisas/all", async (req, res) => {
   try {
@@ -154,24 +154,157 @@ app.get("/pesquisas/all", async (req, res) => {
       include: {
         discentes: {
           select: {
-            discente: true
-            }
+            discente: true,
           },
-          docentes: {
-            select: {
-              docente: true
-            }
-          }
-        }
-    })
+        },
+        docentes: {
+          select: {
+            docente: true,
+          },
+        },
+      },
+    });
     res.json(visualizar);
   } catch (error) {
-    
+    res.send(error).status(500);
   }
-})
+});
 
 // Rotas GET específicas
 
+app.get("/campus/:id", async (req, res) => {
+  try {
+    const visualizar = await prisma.campus.findUnique({
+      where: {
+        id: req.params.id,
+      },
+      include: {
+        cursos: true,
+      },
+    });
+    res.json(visualizar);
+  } catch (error) {
+    res.send(error).status(500);
+  }
+});
+
+app.get("/curso/:id", async (req, res) => {
+  try {
+    const visualizar = await prisma.curso.findUnique({
+      where: {
+        id: req.params.id,
+      },
+      include: {
+        campus: true,
+        matriculas: true,
+        pesquisas: true,
+      },
+    });
+    res.json(visualizar);
+  } catch (error) {
+    res.send(error).status(500);
+  }
+});
+
+app.get("/discente/:id", async (req, res) => {
+  try {
+    const visualizar = await prisma.discente.findUnique({
+      where: {
+        id: req.params.id,
+      },
+      include: {
+        matricula: true,
+        pesquisas: {
+          select: {
+            pesquisa: true,
+          },
+        },
+      },
+    });
+    res.json(visualizar);
+  } catch (error) {
+    res.send(error).status(500);
+  }
+});
+
+app.get("/docente/:id", async (req, res) => {
+  try {
+    const visualizar = await prisma.docente.findUnique({
+      where: {
+        id: req.params.id,
+      },
+      include: {
+        pesquisas: {
+          select: {
+            pesquisa: true,
+          },
+        },
+      },
+    });
+    res.json(visualizar);
+  } catch (error) {
+    res.send(error).status(500);
+  }
+});
+
+app.get("/matricula/:id", async (req, res) => {
+  try {
+    const visualizar = await prisma.matricula.findUnique({
+      where: {
+        id: req.params.id,
+      },
+      include: {
+        Discente: true,
+      },
+    });
+    res.json(visualizar);
+  } catch (error) {
+    res.send(error).status(500);
+  }
+});
+
+app.get("/pesquisa/:id", async (req, res) => {
+  try {
+    const visualizar = await prisma.pesquisa.findUnique({
+      where: {
+        id: req.params.id,
+      },
+      include: {
+        discentes: {
+          select: {
+            discente: true,
+          },
+        },
+        docentes: {
+          select: {
+            docente: true,
+          },
+        },
+      },
+    });
+    res.json(visualizar);
+  } catch (error) {
+    res.send(error).status(500);
+  }
+});
+
+// Rotas POST
+
+app.post("/campus", async (req, res) => {
+  try {
+    const create = await prisma.campus.create({
+      data: {
+        nome: req.body.nome,
+        cidade: req.body.cidade,
+        estado: req.body.estado,
+        email: req.body.email,
+      },
+    });
+    res.json(create);
+  } catch (error) {
+    res.send(error).status(500);
+  }
+});
 
 // Listen
 
