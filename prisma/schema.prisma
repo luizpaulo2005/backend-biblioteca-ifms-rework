@@ -1,0 +1,111 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Campus {
+  id     String  @id @default(uuid())
+  nome   String
+  cidade String
+  estado String
+  email  String
+  cursos Curso[]
+
+  @@map("campus")
+}
+
+model Curso {
+  id        String @id @default(uuid())
+  nome      String
+  grade     Int
+  duracao   String
+  campus_id String
+
+  campus     Campus      @relation(fields: [campus_id], references: [id])
+  matriculas Matricula[]
+  pesquisas  Pesquisa[]
+
+  @@map("curso")
+}
+
+model Docente {
+  id              String            @id @default(uuid())
+  nome            String
+  siape           String
+  email           String
+  data_nascimento DateTime
+  cpf             String
+  formacao        String
+  pesquisas       PesquisaDocente[]
+
+  @@map("docente")
+}
+
+model Discente {
+  id              String   @id @default(uuid())
+  nome            String
+  matricula_id    String   @unique
+  email           String
+  data_nascimento DateTime
+  cpf             String
+
+  pesquisas PesquisaDiscente[]
+  matricula Matricula          @relation(fields: [matricula_id], references: [id])
+
+  @@map("discente")
+}
+
+model Matricula {
+  id          String   @id
+  data_inicio DateTime
+  curso_id    String
+
+  curso    Curso     @relation(fields: [curso_id], references: [id])
+  discente Discente?
+
+  @@map("matricula")
+}
+
+model Pesquisa {
+  id                String   @id @default(uuid())
+  titulo            String
+  data_apresentacao DateTime
+  resumo            String
+  palavras_chave    String
+  curso_id          String
+
+  curso     Curso              @relation(fields: [curso_id], references: [id])
+  discentes PesquisaDiscente[]
+  docentes  PesquisaDocente[]
+
+  @@map("pesquisa")
+}
+
+model PesquisaDiscente {
+  pesquisa_id String
+  discente_id String
+
+  pesquisa Pesquisa @relation(fields: [pesquisa_id], references: [id])
+  discente Discente @relation(fields: [discente_id], references: [id])
+
+  @@id([pesquisa_id, discente_id])
+  @@map("discentes_pesquisa")
+}
+
+model PesquisaDocente {
+  pesquisa_id String
+  docente_id  String
+
+  pesquisa Pesquisa @relation(fields: [pesquisa_id], references: [id])
+  docente  Docente  @relation(fields: [docente_id], references: [id])
+
+  @@id([pesquisa_id, docente_id])
+  @@map("docentes_pesquisa")
+}
