@@ -21,8 +21,8 @@ app.get("/", (req, res) => {
 
 app.get("/campus", async (req, res) => {
   try {
-    const visualizar = await prisma.campus.findMany();
-    res.json(visualizar);
+    const select = await prisma.campus.findMany();
+    res.json(select);
   } catch (error) {
     res.send(error).status(500);
   }
@@ -30,8 +30,8 @@ app.get("/campus", async (req, res) => {
 
 app.get("/cursos", async (req, res) => {
   try {
-    const visualizar = await prisma.curso.findMany();
-    res.json(visualizar);
+    const select = await prisma.curso.findMany();
+    res.json(select);
   } catch (error) {
     res.send(error).status(500);
   }
@@ -39,8 +39,8 @@ app.get("/cursos", async (req, res) => {
 
 app.get("/discentes", async (req, res) => {
   try {
-    const visualizar = await prisma.discente.findMany();
-    res.json(visualizar);
+    const select = await prisma.discente.findMany();
+    res.json(select);
   } catch (error) {
     res.send(error).status(500);
   }
@@ -48,8 +48,8 @@ app.get("/discentes", async (req, res) => {
 
 app.get("/docentes", async (req, res) => {
   try {
-    const visualizar = await prisma.docente.findMany();
-    res.json(visualizar);
+    const select = await prisma.docente.findMany();
+    res.json(select);
   } catch (error) {
     res.send(error).status(500);
   }
@@ -57,8 +57,8 @@ app.get("/docentes", async (req, res) => {
 
 app.get("/matriculas", async (req, res) => {
   try {
-    const visualizar = await prisma.matricula.findMany();
-    res.json(visualizar);
+    const select = await prisma.matricula.findMany();
+    res.json(select);
   } catch (error) {
     res.send(error).status(500);
   }
@@ -66,8 +66,8 @@ app.get("/matriculas", async (req, res) => {
 
 app.get("/pesquisas", async (req, res) => {
   try {
-    const visualizar = await prisma.pesquisa.findMany();
-    res.json(visualizar);
+    const select = await prisma.pesquisa.findMany();
+    res.json(select);
   } catch (error) {
     res.send(error).status(500);
   }
@@ -77,12 +77,12 @@ app.get("/pesquisas", async (req, res) => {
 
 app.get("/campus/all", async (req, res) => {
   try {
-    const visualizar = await prisma.campus.findMany({
+    const select = await prisma.campus.findMany({
       include: {
         cursos: true,
       },
     });
-    res.json(visualizar);
+    res.json(select);
   } catch (error) {
     res.send(error).status(500);
   }
@@ -90,12 +90,12 @@ app.get("/campus/all", async (req, res) => {
 
 app.get("/cursos/all", async (req, res) => {
   try {
-    const visualizar = await prisma.curso.findMany({
+    const select = await prisma.curso.findMany({
       include: {
         pesquisas: true,
       },
     });
-    res.json(visualizar);
+    res.json(select);
   } catch (error) {
     res.send(error).status(500);
   }
@@ -103,7 +103,7 @@ app.get("/cursos/all", async (req, res) => {
 
 app.get("/discentes/all", async (req, res) => {
   try {
-    const visualizar = await prisma.discente.findMany({
+    const select = await prisma.discente.findMany({
       include: {
         pesquisas: {
           select: {
@@ -112,7 +112,7 @@ app.get("/discentes/all", async (req, res) => {
         },
       },
     });
-    res.json(visualizar);
+    res.json(select);
   } catch (error) {
     res.send(error).status(500);
   }
@@ -120,7 +120,7 @@ app.get("/discentes/all", async (req, res) => {
 
 app.get("/docentes/all", async (req, res) => {
   try {
-    const visualizar = await prisma.docente.findMany({
+    const select = await prisma.docente.findMany({
       include: {
         pesquisas: {
           select: {
@@ -129,7 +129,7 @@ app.get("/docentes/all", async (req, res) => {
         },
       },
     });
-    res.json(visualizar);
+    res.json(select);
   } catch (error) {
     res.send(error).status(500);
   }
@@ -137,12 +137,12 @@ app.get("/docentes/all", async (req, res) => {
 
 app.get("/matriculas/all", async (req, res) => {
   try {
-    const visualizar = await prisma.matricula.findMany({
+    const select = await prisma.matricula.findMany({
       include: {
         Discente: true,
       },
     });
-    res.json(visualizar);
+    res.json(select);
   } catch (error) {
     res.send(error).status(500);
   }
@@ -150,7 +150,7 @@ app.get("/matriculas/all", async (req, res) => {
 
 app.get("/pesquisas/all", async (req, res) => {
   try {
-    const visualizar = await prisma.pesquisa.findMany({
+    const select = await prisma.pesquisa.findMany({
       include: {
         discentes: {
           select: {
@@ -164,7 +164,7 @@ app.get("/pesquisas/all", async (req, res) => {
         },
       },
     });
-    res.json(visualizar);
+    res.json(select);
   } catch (error) {
     res.send(error).status(500);
   }
@@ -174,7 +174,7 @@ app.get("/pesquisas/all", async (req, res) => {
 
 app.get("/campus/:id", async (req, res) => {
   try {
-    const visualizar = await prisma.campus.findUnique({
+    const select = await prisma.campus.findUnique({
       where: {
         id: req.params.id,
       },
@@ -182,7 +182,7 @@ app.get("/campus/:id", async (req, res) => {
         cursos: true,
       },
     });
-    res.json(visualizar);
+    res.json(select);
   } catch (error) {
     res.send(error).status(500);
   }
@@ -190,7 +190,7 @@ app.get("/campus/:id", async (req, res) => {
 
 app.get("/curso/:id", async (req, res) => {
   try {
-    const visualizar = await prisma.curso.findUnique({
+    const select = await prisma.curso.findUnique({
       where: {
         id: req.params.id,
       },
@@ -200,7 +200,7 @@ app.get("/curso/:id", async (req, res) => {
         pesquisas: true,
       },
     });
-    res.json(visualizar);
+    res.json(select);
   } catch (error) {
     res.send(error).status(500);
   }
@@ -208,7 +208,7 @@ app.get("/curso/:id", async (req, res) => {
 
 app.get("/discente/:id", async (req, res) => {
   try {
-    const visualizar = await prisma.discente.findUnique({
+    const select = await prisma.discente.findUnique({
       where: {
         id: req.params.id,
       },
@@ -221,7 +221,7 @@ app.get("/discente/:id", async (req, res) => {
         },
       },
     });
-    res.json(visualizar);
+    res.json(select);
   } catch (error) {
     res.send(error).status(500);
   }
@@ -229,7 +229,7 @@ app.get("/discente/:id", async (req, res) => {
 
 app.get("/docente/:id", async (req, res) => {
   try {
-    const visualizar = await prisma.docente.findUnique({
+    const select = await prisma.docente.findUnique({
       where: {
         id: req.params.id,
       },
@@ -241,7 +241,7 @@ app.get("/docente/:id", async (req, res) => {
         },
       },
     });
-    res.json(visualizar);
+    res.json(select);
   } catch (error) {
     res.send(error).status(500);
   }
@@ -249,7 +249,7 @@ app.get("/docente/:id", async (req, res) => {
 
 app.get("/matricula/:id", async (req, res) => {
   try {
-    const visualizar = await prisma.matricula.findUnique({
+    const select = await prisma.matricula.findUnique({
       where: {
         id: req.params.id,
       },
@@ -257,7 +257,7 @@ app.get("/matricula/:id", async (req, res) => {
         Discente: true,
       },
     });
-    res.json(visualizar);
+    res.json(select);
   } catch (error) {
     res.send(error).status(500);
   }
@@ -265,7 +265,7 @@ app.get("/matricula/:id", async (req, res) => {
 
 app.get("/pesquisa/:id", async (req, res) => {
   try {
-    const visualizar = await prisma.pesquisa.findUnique({
+    const select = await prisma.pesquisa.findUnique({
       where: {
         id: req.params.id,
       },
@@ -282,7 +282,7 @@ app.get("/pesquisa/:id", async (req, res) => {
         },
       },
     });
-    res.json(visualizar);
+    res.json(select);
   } catch (error) {
     res.send(error).status(500);
   }
