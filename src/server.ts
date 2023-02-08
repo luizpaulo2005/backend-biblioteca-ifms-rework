@@ -288,6 +288,21 @@ app.get("/pesquisa/:id", async (req, res) => {
   }
 });
 
+// Rota de Sumário
+
+app.get('/pesquisas/sumario', async (req, res)=>{
+  try {
+    const select = await prisma.pesquisa.findMany({
+      orderBy: {
+        data_apresentacao: "desc"
+      },
+      take: 10
+    })
+  } catch (error) {
+    res.send(error).status(500);
+  }
+})
+
 // Rotas POST
 
 app.post("/campus", async (req, res) => {
@@ -298,6 +313,22 @@ app.post("/campus", async (req, res) => {
         cidade: req.body.cidade,
         estado: req.body.estado,
         email: req.body.email,
+      },
+    });
+    res.json(create);
+  } catch (error) {
+    res.send(error).status(500);
+  }
+});
+
+app.post("/curso", async (req, res) => {
+  try {
+    const create = await prisma.curso.create({
+      data: {
+        nome: req.body.nome,
+        grade: req.body.grade,
+        duracao: req.body.duracao,
+        campus_id: req.body.campus_id,
       },
     });
     res.json(create);
