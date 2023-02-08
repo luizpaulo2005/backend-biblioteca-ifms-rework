@@ -296,6 +296,18 @@ app.get('/pesquisas/sumario', async (req, res)=>{
       orderBy: {
         data_apresentacao: "desc"
       },
+      include:{
+        discentes: {
+          select: {
+            discente: true
+          }
+        },
+        docentes:{
+          select: {
+            docente: true
+          }
+        }
+      },
       take: 10
     })
     res.json(select);
