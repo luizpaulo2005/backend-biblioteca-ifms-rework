@@ -298,6 +298,7 @@ app.get('/pesquisas/sumario', async (req, res)=>{
       },
       take: 10
     })
+    res.json(select);
   } catch (error) {
     res.send(error).status(500);
   }
