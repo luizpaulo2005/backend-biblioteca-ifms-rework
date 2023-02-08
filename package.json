@@ -9,6 +9,7 @@
   "author": "luizp",
   "license": "ISC",
   "devDependencies": {
+    "@types/cors": "^2.8.13",
     "@types/express": "^4.17.16",
     "prisma": "^4.9.0",
     "tsx": "^3.12.2",
@@ -16,6 +17,7 @@
   },
   "dependencies": {
     "@prisma/client": "^4.9.0",
+    "cors": "^2.8.5",
     "ejs": "^3.1.8",
     "express": "^4.18.2"
   }
