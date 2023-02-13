@@ -80,6 +80,7 @@ model Pesquisa {
   resumo            String
   palavras_chave    String
   curso_id          String
+  url_download      String   @default(uuid())
 
   curso     Curso              @relation(fields: [curso_id], references: [id])
   discentes PesquisaDiscente[]
