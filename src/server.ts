@@ -141,7 +141,7 @@ app.get("/matriculas/all", async (req, res) => {
   try {
     const select = await prisma.matricula.findMany({
       include: {
-        Discente: true,
+        discente: true,
       },
     });
     res.json(select);
@@ -256,7 +256,7 @@ app.get("/matricula/:id", async (req, res) => {
         id: req.params.id,
       },
       include: {
-        Discente: true,
+        discente: true,
       },
     });
     res.json(select);
