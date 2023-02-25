@@ -292,31 +292,31 @@ app.get("/pesquisa/:id", async (req, res) => {
 
 // Rota de Sumário
 
-app.get('/pesquisas/sumario', async (req, res)=>{
+app.get("/pesquisas/sumario", async (req, res) => {
   try {
     const select = await prisma.pesquisa.findMany({
       orderBy: {
-        data_apresentacao: "desc"
+        data_apresentacao: "desc",
       },
-      include:{
+      include: {
         discentes: {
           select: {
-            discente: true
-          }
+            discente: true,
+          },
         },
-        docentes:{
+        docentes: {
           select: {
-            docente: true
-          }
-        }
+            docente: true,
+          },
+        },
       },
-      take: 10
-    })
+      take: 10,
+    });
     res.json(select);
   } catch (error) {
     res.send(error).status(500);
   }
-})
+});
 
 // Rotas POST
 
@@ -337,16 +337,159 @@ app.post("/campus", async (req, res) => {
 });
 
 app.post("/curso", async (req, res) => {
+  const create = await prisma.curso.create({
+    data: {
+      nome: req.body.nome,
+      grade: req.body.grade.parse(),
+      duracao: req.body.duracao,
+      campus_id: req.body.campus_id,
+    },
+  });
+  res.json(create);
+});
+
+app.post("/discente", async (req, res) => {
+  var data = new Date(req.body.data_nascimento);
+
   try {
-    const create = await prisma.curso.create({
+    const create = await prisma.discente.create({
       data: {
         nome: req.body.nome,
-        grade: req.body.grade,
-        duracao: req.body.duracao,
-        campus_id: req.body.campus_id,
+        matricula_id: req.body.matricula_id,
+        email: req.body.email,
+        data_nascimento: data,
+        cpf: req.body.cpf,
       },
     });
     res.json(create);
+  } catch (error) {
+    res.send(error).status(500);
+  }
+});
+
+app.post("/docente", async (req, res) => {
+  var data = new Date(req.body.data_nascimento);
+
+  try {
+    const create = await prisma.docente.create({
+      data: {
+        nome: req.body.nome,
+        cpf: req.body.cpf,
+        data_nascimento: data,
+        siape: req.body.siape,
+        email: req.body.email,
+        formacao: req.body.formacao,
+      },
+    });
+    res.json(create);
+  } catch (error) {
+    res.send(error).status(500);
+  }
+});
+
+app.post("/matricula", async (req, res) => {
+  var data = new Date(req.body.data_inicio);
+
+  try {
+    const create = await prisma.matricula.create({
+      data: {
+        id: req.body.id,
+        data_inicio: data,
+        curso_id: req.body.curso_id,
+      },
+    });
+    res.json(create);
+  } catch (error) {
+    var data = new Date(req.body.data_nascimento);
+  }
+});
+
+app.post("/pesquisa", async (req, res) => {});
+
+// Put
+
+app.put("/campus/:id", async (req, res) => {});
+app.put("/curso/:id", async (req, res) => {});
+app.put("/discente/:id", async (req, res) => {});
+app.put("/docente/:id", async (req, res) => {});
+app.put("/matricula/:id", async (req, res) => {});
+app.put("/pesquisa/:id", async (req, res) => {});
+
+// Delete
+
+app.delete("/campus/:id", async (req, res) => {
+  try {
+    const del = await prisma.campus.delete({
+      where: {
+        id: req.params.id,
+      },
+    });
+    res.json(del);
+  } catch (error) {
+    res.send(error).status(500);
+  }
+});
+
+app.delete("/curso/:id", async (req, res) => {
+  try {
+    const del = await prisma.curso.delete({
+      where: {
+        id: req.params.id,
+      },
+    });
+    res.json(del);
+  } catch (error) {
+    res.send(error).status(500);
+  }
+});
+
+app.delete("/discente/:id", async (req, res) => {
+  try {
+    const del = await prisma.discente.delete({
+      where: {
+        id: req.params.id,
+      },
+    });
+    res.json(del);
+  } catch (error) {
+    res.send(error).status(500);
+  }
+});
+
+app.delete("/docente/:id", async (req, res) => {
+  try {
+    const del = await prisma.docente.delete({
+      where: {
+        id: req.params.id,
+      },
+    });
+    res.json(del);
+  } catch (error) {
+    res.send(error).status(500);
+  }
+});
+
+app.delete("/matricula/:id", async (req, res) => {
+  try {
+    const del = await prisma.matricula.delete({
+      where: {
+        id: req.params.id,
+      },
+    });
+    res.json(del);
+  } catch (error) {
+    res.send(error).status(500);
+  }
+});
+
+app.delete("/pesquisa/:id", async (req, res) => {
+  try {
+    const del = await prisma.pesquisa.delete({
+      where: {
+        id: req.params.id,
+      },
+    });
+    res.json(del);
   } catch (error) {
     res.send(error).status(500);
   }
