@@ -340,7 +340,7 @@ app.post("/curso", async (req, res) => {
   const create = await prisma.curso.create({
     data: {
       nome: req.body.nome,
-      grade: req.body.grade.parse(),
+      grade: req.body.grade.parseInt(),
       duracao: req.body.duracao,
       campus_id: req.body.campus_id,
     },
