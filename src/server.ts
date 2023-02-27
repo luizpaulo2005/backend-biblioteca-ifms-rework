@@ -142,6 +142,7 @@ app.get("/matriculas/all", async (req, res) => {
   try {
     const select = await prisma.matricula.findMany({
       include: {
+        curso: true,
         discente: true,
       },
     });
