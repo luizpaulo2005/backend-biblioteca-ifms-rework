@@ -338,15 +338,19 @@ app.post("/campus", async (req, res) => {
 });
 
 app.post("/curso", async (req, res) => {
-  const create = await prisma.curso.create({
-    data: {
-      nome: req.body.nome,
-      grade: req.body.grade.parseInt(),
-      duracao: req.body.duracao,
-      campus_id: req.body.campus_id,
-    },
-  });
-  res.json(create);
+  try {
+    const create = await prisma.curso.create({
+      data: {
+        nome: req.body.nome,
+        grade: req.body.grade.parseInt(),
+        duracao: req.body.duracao,
+        campus_id: req.body.campus_id,
+      },
+    });
+    res.json(create);
+  } catch (error) {
+    res.send(error).status(500);
+  }
 });
 
 app.post("/discente", async (req, res) => {
