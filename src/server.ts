@@ -94,7 +94,8 @@ app.get("/cursos/all", async (req, res) => {
   try {
     const select = await prisma.curso.findMany({
       include: {
-        pesquisas: true,
+        campus: true,
+        pesquisas: true
       },
     });
     res.json(select);
